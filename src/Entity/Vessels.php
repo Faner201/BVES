@@ -68,6 +68,12 @@ class Vessels
     }
 
     /**
+     * @var string[]
+     */
+
+    public static $typeArray = ['газовый танкер', 'контейнеровоз', 'нефтеналивной танкер', 'танкер продуктовоз'];
+
+    /**
      * @var string
      */
     private $productType;
@@ -87,6 +93,12 @@ class Vessels
     {
         $this->productType = $productType;
     }
+
+    /**
+     * @var string[]
+     */
+
+    public static $productTypeArray = ['дерево', 'руда', 'нефть', 'бензин', 'машины', 'контейнеры'];
 
     /**
      * @var string
