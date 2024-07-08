@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Api;
+namespace App\Command;
 
 use App\Entity\Companies;
 use App\Entity\Information;
@@ -22,7 +22,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 
 
-class ApiShipTransportation extends Command
+class CommandModellingApiShipTransportation extends Command
 {
     private HttpClientInterface $client;
     protected static $defaultName = 'app:call-api';
@@ -43,11 +43,16 @@ class ApiShipTransportation extends Command
     {
         $data = $this->serialize($this->generateDate());
 
+
         $response = $this->client->request(
-            'GET',
+            'POST',
             'http://127.0.0.1:8000/processing',
             [
-                'json' => $data,
+                'headers' => [
+                    'Accept' => 'application/json',
+                    'Content-Type' => 'application/json; charset=utf-8',
+                ],
+                'json' => $data
             ]
         );
 

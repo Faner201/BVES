@@ -9,14 +9,13 @@ use Symfony\Component\Routing\Annotation\Route;
 class DataAcceptanceController extends AbstractController
 {
     /**
-     * @Route("/processing", name="app_processing", methods={"GET"})
+     * @Route("/processing", name="app_processing", methods={"GET", "POST"})
      */
     public function processing(Request $request): Response
     {
-        $data = $request->getContentType();
-        var_dump($data);
+        $data = json_decode($request->getContent());
         return new Response(
-            '<html><body>Информация принята</body></html>',
+            '<html><body>Информация принята!</body></html>',
             Response::HTTP_OK
         );
     }
