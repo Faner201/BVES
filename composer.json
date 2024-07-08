@@ -31,8 +31,7 @@
         "symfony/serializer": "5.4.*",
         "symfony/twig-bundle": "5.4.*",
         "symfony/validator": "5.4.*",
-        "symfony/yaml": "5.4.*",
-        "ext-http": "*"
+        "symfony/yaml": "5.4.*"
     },
     "config": {
         "allow-plugins": {
@@ -83,5 +82,9 @@
             "require": "5.4.*",
             "docker": true
         }
+    },
+    "require-dev": {
+        "symfony/stopwatch": "5.4.*",
+        "symfony/web-profiler-bundle": "5.4.*"
     }
 }
