@@ -19,9 +19,6 @@ use Symfony\Component\Serializer\Serializer;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-
-
-
 class CommandModellingApiShipTransportation extends Command
 {
     private HttpClientInterface $client;
