@@ -5,4 +5,12 @@ BVES (in the expanded version broker, validation, exchange, save)  - the project
 ```
   cp .env.example .env
 ```
-
+### Using
+In this system, there is this command that provides the opportunity to simulate an external call to the API being developed
+```
+  php bin/console app:call-api
+```
+Also, you need to start the consumer to listen to the queue using this command
+```
+php bin/console rabbitMQ:consumer-validate-data "Your name queue, which contains the new data" 
+```
