@@ -8,6 +8,7 @@ use App\Entity\Location;
 use App\Entity\NamePerson;
 use App\Entity\Ports;
 use App\Entity\Vessels;
+use App\Serializer\Serializer;
 use Faker\Factory;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -15,19 +16,21 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Serializer\Encoder\JsonEncode;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class CommandModellingApiShipTransportation extends Command
 {
     private HttpClientInterface $client;
+    private SerializerInterface $serializer;
     protected static $defaultName = 'app:call-api';
     protected static $defaultDescription = 'Modeling an external Api call.';
 
-    public function __construct(HttpClientInterface $client)
+    public function __construct(HttpClientInterface $client, SerializerInterface $serializer)
     {
         $this->client = $client;
+        $this->serializer = $serializer;
 
         parent::__construct();
     }
@@ -38,7 +41,12 @@ class CommandModellingApiShipTransportation extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output): int
     {
-        $data = $this->serialize($this->generateDate());
+        $data = $this->serializer->serialize
+        (
+            $this->generateDate(),
+            JsonEncoder::FORMAT,
+            ['json_encode_options' => JSON_UNESCAPED_UNICODE]
+        );
 
 
         $response = $this->client->request(
@@ -68,97 +76,76 @@ class CommandModellingApiShipTransportation extends Command
     {
         $faker = Factory::create();
         $dataArray = array();
-        for($i = 0; $i < 5; $i++)
-        {
-            $vessels = array();
-            $ports = array();
-            $companies = array();
 
-            for($i = 0; $i < 10; $i++)
-            {
+        for($i = 0; $i < 25; $i++) {
 
-                $vessel = new Vessels(
-                    $faker->numberBetween(0, 5000),
-                    $faker->numberBetween(0, 1000),
-                    Vessels::$typeArray[$faker->numberBetween(0, 3)],
-                    Vessels::$productTypeArray[$faker->numberBetween(0, 5)],
-                    $faker->numberBetween(1980, 2023)
-                );
+            $vessel = new Vessels(
+                $faker->numberBetween(0, 5000),
+                $faker->numberBetween(0, 1000),
+                Vessels::$typeArray[$faker->numberBetween(0, 3)],
+                Vessels::$productTypeArray[$faker->numberBetween(0, 5)],
+                $faker->numberBetween(1980, 2023)
+            );
 
-                $port = new Ports
+            $port = new Ports
+            (
+                $faker->domainName(),
+                new Location
                 (
+                    $faker->country(),
+                    $faker->city()
+                )
+            );
+
+            $companie = new Companies
+            (
+                $faker->company(),
+                new Location
+                (
+                    $faker->country(),
+                    $faker->city()
+                ),
+                new Information
+                (
+                    $faker->phoneNumber(),
+                    $faker->companyEmail(),
+                ),
+                new NamePerson
+                (
+                    $faker->firstName(),
+                    $faker->lastName(),
                     $faker->domainName(),
-                    new Location
-                    (
-                        $faker->country(),
-                        $faker->city()
-                    )
-                );
+                )
+            );
 
-                $companie = new Companies
+            if ($i / 4 == 0) {
+                $vessel->setLength(-3000);
+                $vessel->setWeight(-5000);
+                $companie->setInformation
                 (
-                    $faker->company(),
-                    new Location
-                    (
-                        $faker->country(),
-                        $faker->city()
-                    ),
                     new Information
                     (
-                        $faker->phoneNumber(),
-                        $faker->companyEmail(),
-                    ),
-                    new NamePerson
-                    (
-                        $faker->firstName(),
-                        $faker->lastName(),
-                        $faker->domainName(),
+                        "+897845324", "fwerw@@mail.fwf"
                     )
                 );
-
-                if($i / 4 == 0)
-                {
-                    $vessel->setLength(-3000);
-                    $vessel->setWeight(-5000);
-                    $companie->setInfomation
+            } elseif ($i / 3 == 0) {
+                $companie->setInformation
+                (
+                    new Information
                     (
-                        new Information
-                        (
-                        "+897845324", "fwerw@@mail.fwf"
-                        )
-                    );
-                } elseif ($i / 3 == 0)
-                {
-                    $companie->setInfomation
-                    (
-                        new Information
-                        (
                         "+7-(924)-565-45-34", "fwerw@@mail.fwf"
-                        )
-                    );
-                }
-
-                $vessels[] = $vessel;
-                $ports[] = $port;
-                $companies[] = $companie;
+                    )
+                );
             }
-            array_push($dataArray, $vessels, $ports, $companies);
+
+            $dataArray[] = array
+            (
+                'Vessel' => $vessel,
+                'Port' => $port,
+                'Companie' => $companie,
+            );
         }
 
         return $dataArray;
-    }
-
-    private function serialize(array $data): string {
-        $encoders = [new JsonEncode()];
-        $normalizer = [new ObjectNormalizer()];
-
-        $serializer = new Serializer($normalizer, $encoders);
-
-        return $serializer->serialize
-        (
-            $data,
-            JsonEncoder::FORMAT,
-            ['json_encode_options' => JSON_UNESCAPED_UNICODE]
-        );
     }
 }
