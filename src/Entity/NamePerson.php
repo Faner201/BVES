@@ -72,7 +72,7 @@ class NamePerson
      * @param string $lastName
      * @param string $middleName
      */
-    public function __construct($firstName, $lastName, $middleName)
+    public function __construct(string $firstName, string $lastName, string $middleName)
     {
         $this->firstName = $firstName;
         $this->lastName = $lastName;

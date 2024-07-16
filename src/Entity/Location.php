@@ -7,14 +7,14 @@ class Location
     /**
      * @var string
      */
-    private $county;
+    private $country;
 
     /**
      * @return string
      */
-    public function getCounty(): string
+    public function getCountry(): string
     {
-        return $this->county;
+        return $this->country;
     }
 
 
@@ -32,12 +32,12 @@ class Location
     }
 
     /**
-     * @param string $county
+     * @param string $country
      * @param string $city
      */
-    public function __construct(string $county, string $city)
+    public function __construct(string $country, string $city)
     {
-        $this->county = $county;
+        $this->country = $country;
         $this->city = $city;
     }
 }

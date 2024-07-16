@@ -1,9 +1,7 @@
 <?php
 namespace App\Controller;
 
-use App\Consumer\ConsumerAbstract;
 use App\Producer\Producer;
-use PhpAmqpLib\Message\AMQPMessage;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,8 +14,9 @@ class DataAcceptanceController extends AbstractController
      */
     public function processing(Request $request): Response
     {
-        $data = $request->getContent();
 
+//        $data = json_decode(json_decode($request->getContent()), true);
+        $data = $request->getContent();
         $queue = 'task';
 
         $producer = new Producer();
@@ -30,4 +29,5 @@ class DataAcceptanceController extends AbstractController
             Response::HTTP_OK
         );
     }
+
 }

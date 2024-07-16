@@ -49,22 +49,22 @@ class Companies
     /**
      * @var Information
      */
-    private $infomation;
+    private $information;
 
     /**
      * @return Information
      */
-    public function getInfomation(): Information
+    public function getInformation(): Information
     {
-        return $this->infomation;
+        return $this->information;
     }
 
     /**
-     * @param Information $infomation
+     * @param Information $information
      */
-    public function setInfomation(Information $infomation): void
+    public function setInformation(Information $information): void
     {
-        $this->infomation = $infomation;
+        $this->information = $information;
     }
 
     /**
@@ -91,14 +91,14 @@ class Companies
     /**
      * @param string $name
      * @param Location $location
-     * @param Information $infomation
+     * @param Information $information
      * @param NamePerson $founder
      */
-    public function __construct(string $name, Location $location, Information $infomation, NamePerson $founder)
+    public function __construct(string $name, Location $location, Information $information, NamePerson $founder)
     {
         $this->name = $name;
         $this->location = $location;
-        $this->infomation = $infomation;
+        $this->information = $information;
         $this->founder = $founder;
     }
 
