@@ -14,6 +14,18 @@ class CommandValidateConsumerData extends Command
     protected static $defaultName = 'rabbitMQ:consumer-validate-data';
     protected static $defaultDescription = 'Validation of data in runtime received from the queue.';
 
+    private ConsumerValidate $consumer;
+
+    /**
+     * @param ConsumerValidate $consumer
+     */
+    public function __construct(ConsumerValidate $consumer)
+    {
+        $this->consumer = $consumer;
+        parent::__construct();
+    }
+
+
     protected function configure()
     {
         $this->addArgument('name-queue', InputArgument::REQUIRED, 'The main queue for taking data');
@@ -21,15 +33,14 @@ class CommandValidateConsumerData extends Command
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $consumer = new ConsumerValidate();
         try {
-            $consumer->receiving($input->getArgument('name-queue'));
+            $this->consumer->receiving($input->getArgument('name-queue'));
         } catch (\Exception $ex) {
             $output->writeln('Операция получила ошибку:'. $ex);
-            $consumer->closure();
+            $this->consumer->closure();
             return Command::FAILURE;
         }
-        $consumer->closure();
+        $this->consumer->closure();
 
         $output->writeln('Операция прошла успешна');
 
