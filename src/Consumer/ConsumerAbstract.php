@@ -5,7 +5,6 @@ namespace App\Consumer;
 use App\RabbitConnection;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
-use PhpAmqpLib\Message\AMQPMessage;
 
 /**
  * @method externalCallback($message)
@@ -68,6 +67,7 @@ abstract class ConsumerAbstract extends RabbitConnection
     {
         return $this->channel;
     }
+
 
     abstract protected function callback($message);
 }

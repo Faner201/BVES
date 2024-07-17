@@ -5,11 +5,9 @@ namespace App\Consumer;
 use App\Entity\Companies;
 use App\Entity\Ports;
 use App\Entity\Vessels;
-use App\Serializer\Serializer;
 use PhpAmqpLib\Message\AMQPMessage;
-use Symfony\Component\Serializer\Encoder\JsonEncode;
+use stdClass;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -17,7 +15,6 @@ class ConsumerValidate extends ConsumerAbstract
 {
 
     private ValidatorInterface $validator;
-    private SerializerInterface $serializer;
 
     /**
      * @param ValidatorInterface $validator
@@ -32,13 +29,15 @@ class ConsumerValidate extends ConsumerAbstract
 
     public function callback($message)
     {
-        $dataArray = json_decode(json_decode($message->body), true);
+        $jsonArray = json_decode(json_decode($message->body), true);
 
         $validData = array();
 
         $validErrors = array();
 
-        foreach ($dataArray as $jsonData) {
+        $class = stdClass::class;
+
+        foreach ($jsonArray as $jsonData) {
 
             $qualityData = true;
 
@@ -51,8 +50,6 @@ class ConsumerValidate extends ConsumerAbstract
 
             foreach ($jsonData as $name =>  $data) {
                 $json = $this->serialize($data);
-
-                $class =  \stdClass::class;
 
                 switch ($name) {
                     case 'Vessel':
