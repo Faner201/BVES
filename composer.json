@@ -25,6 +25,7 @@
         "symfony/flex": "^1.21",
         "symfony/framework-bundle": "5.4.*",
         "symfony/http-client": "5.4.*",
+        "symfony/intl": "5.4.*",
         "symfony/property-access": "5.4.*",
         "symfony/property-info": "5.4.*",
         "symfony/runtime": "5.4.*",
