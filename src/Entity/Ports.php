@@ -2,10 +2,41 @@
 
 namespace App\Entity;
 
+use App\Repository\PortsRepository;
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity(repositoryClass=PortsRepository::class)
+ * @ORM\Table(name="ports")
+ */
 class Ports
 {
     /**
+     * @var int
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
+     */
+    private $id;
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     */
+    public function setId(int $id): void
+    {
+        $this->id = $id;
+    }
+
+    /**
      * @var string
+     * @ORM\Column(type="string")
      */
     private $name;
 
@@ -27,6 +58,7 @@ class Ports
 
     /**
      * @var Location
+     * @ORM\OneToOne(targetEntity="Location", cascade={"persist"})
      */
     private $location;
 

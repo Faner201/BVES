@@ -2,10 +2,41 @@
 
 namespace App\Entity;
 
+use App\Repository\VesselsRepository;
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity(repositoryClass=VesselsRepository::class)
+ * @ORM\Table(name="vessels")
+ */
 class Vessels
 {
     /**
      * @var int
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
+     */
+    private $id;
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     */
+    public function setId(int $id): void
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @var int
+     * @ORM\Column(type="integer")
      */
     private $length;
 
@@ -27,6 +58,7 @@ class Vessels
 
     /**
      * @var int
+     * @ORM\Column(type="integer")
      */
     private $weight;
 
@@ -48,6 +80,7 @@ class Vessels
 
     /**
      * @var string
+     * @ORM\Column(type="string")
      */
     private $type;
 
@@ -75,6 +108,7 @@ class Vessels
 
     /**
      * @var string
+     * @ORM\Column(type="string")
      */
     private $productType;
 
@@ -102,6 +136,7 @@ class Vessels
 
     /**
      * @var string
+     * @ORM\Column(type="string")
      */
     private $yearRelease;
 

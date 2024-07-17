@@ -2,10 +2,40 @@
 
 namespace App\Entity;
 
+use App\Repository\NamePersonRepository;
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity(repositoryClass=NamePersonRepository::class)
+ * @ORM\Table(name="name_person")
+ */
 class NamePerson
 {
     /**
+     * @var int
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
+     */
+    private $id;
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     */
+    public function setId(int $id): void
+    {
+        $this->id = $id;
+    }
+    /**
      * @var string
+     * @ORM\Column(type="string")
      */
     private $firstName;
 
@@ -27,6 +57,7 @@ class NamePerson
 
     /**
      * @var string
+     * @ORM\Column(type="string")
      */
     private $lastName;
 
@@ -48,6 +79,7 @@ class NamePerson
 
     /**
      * @var string
+     * @ORM\Column(type="string")
      */
     private $middleName;
 
