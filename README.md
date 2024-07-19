@@ -31,5 +31,5 @@ make run-consumer-db
 ```
 After the above steps, you can simulate the interaction of an external service with our api
 ```
-  make run external-api
+  make run-external-api
 ```
