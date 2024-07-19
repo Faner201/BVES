@@ -1,21 +1,63 @@
 version: '3'
 
 services:
-###> doctrine/doctrine-bundle ###
   database:
-    image: postgres:${POSTGRES_VERSION:-16}-alpine
+    build:
+      context: ./docker/postgres
+    ports:
+      - "${DB_DOCKER_HOST_PORT}:5432"
     environment:
-      POSTGRES_DB: ${POSTGRES_DB:-app}
-      # You should definitely change the password in production
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-!ChangeMe!}
-      POSTGRES_USER: ${POSTGRES_USER:-app}
+      - POSTGRES_DB=${DB_DATABASE}
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
     volumes:
-      - database_data:/var/lib/postgresql/data:rw
-      # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
-      # - ./docker/db/data:/var/lib/postgresql/data:rw
-###< doctrine/doctrine-bundle ###
+      - postgresql:/var/lib/postgresql/data/
+
+  php:
+    build:
+      context: ./docker/php
+    depends_on:
+      - database
+      - rabbitmq
+    links:
+      - rabbitmq
+    working_dir: /app
+    volumes:
+      - ./:/app/
+      - ~/.composer/docker-cache/:/root/.composer:cached
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  webserver:
+    build:
+      context: ./docker/nginx/
+    depends_on:
+      - php
+    ports:
+      - "${APP_DOCKER_HOST_PORT}:80"
+    tty: true
+    volumes:
+      - ./docker/nginx/conf.d/app.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./public/:/app/public/:ro
+
+  rabbitmq:
+    build:
+      context: ./docker/rabbitmq
+    ports:
+      - "${RABBIT_MQ_PORT}:15672"
+    hostname: rabbitmq
+    restart: always
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBIT_MQ_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBIT_MQ_PASSWORD}
+      - RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS=-rabbit disk_free_limit 2147483648
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:15672" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
 
 volumes:
-###> doctrine/doctrine-bundle ###
-  database_data:
-###< doctrine/doctrine-bundle ###
+  postgresql:
+    driver: local
