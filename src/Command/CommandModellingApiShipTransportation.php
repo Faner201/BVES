@@ -118,7 +118,7 @@ class CommandModellingApiShipTransportation extends Command
                 )
             );
 
-            if ($i / 4 == 0) {
+            if ($i % 4 == 0) {
                 $vessel->setLength(-3000);
                 $vessel->setWeight(-5000);
                 $companie->setInformation
@@ -128,7 +128,7 @@ class CommandModellingApiShipTransportation extends Command
                         "+897845324", "fwerw@@mail.fwf"
                     )
                 );
-            } elseif ($i / 3 == 0) {
+            } elseif ($i % 3 == 0) {
                 $companie->setInformation
                 (
                     new Information
