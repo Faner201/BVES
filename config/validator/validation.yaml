@@ -1,0 +1,184 @@
+App\Entity\Vessels:
+  properties:
+    length:
+      - NotBlank:
+          allowNull: false
+          message: Длина не является действительной
+
+      - Type:
+          type: int
+          message: Данное значение {{ value }} не является необходимым типом данных {{ type }}
+
+      - Positive:
+          message: Данное значение должно быть положительным
+
+
+    weight:
+      - NotBlank:
+          allowNull: false
+          message: Ширина не является действительной
+
+      - Type:
+          type: int
+          message: Данное значение {{ value }} не является необходимым типом данных {{ type }}
+
+      - Positive:
+          message: Данное значение должно быть положительным
+
+    type:
+      - NotBlank:
+          allowNull: false
+          message: Тип судна не является действительным
+
+      - Type:
+          type: string
+          message: Данное значение {{ value }} не является необходимым типом данных {{ type }}
+
+      - Length:
+          min: 2
+          minMessage: Данный тип не является валидным
+
+    productType:
+      - NotBlank:
+          allowNull: false
+          message: Тип перевозимых продуктов не является действительным
+
+      - Type:
+          type: string
+          message: Данное значение {{ value }} не является необходимым типом данных {{ type }}
+
+      - Length:
+          min: 2
+          minMessage: Данный тип не является валидным
+
+    yearRelease:
+      - NotBlank:
+          allowNull: false
+          message: Год выпуска не является действительным
+
+      - Type:
+          type: string
+          message: Данное значение {{ value }} не является необходимым типом данных {{ type }}
+
+      - Length:
+          min: 4
+          max: 4
+          minMessage: Данный год не является валидным
+          maxMessage: Данный год не является валидным
+
+
+App\Entity\Information:
+  properties:
+    number:
+      - NotBlank:
+          allowNull: false
+          message: Телефонный номер не является действительным
+
+      - Type:
+          type: string
+          message: Данное значение {{ value }} не является необходимым типом данных {{ type }}
+
+      - Length:
+          min: 11
+          max: 11
+          minMessage: Данный номер не является валидным
+          maxMessage: Данный номер не является валидным
+
+    email:
+      - NotBlank:
+          allowNull: false
+          message:  Эллектронная почта не является действительным
+
+      - Type:
+          type: string
+          message: Данное значение {{ value }} не является необходимым типом данных {{ type }}
+
+      - Email:
+          mode: html5
+          message: Данная почта {{ value }} не является валидным
+
+
+App\Entity\Location:
+  properties:
+    country:
+      - NotBlank:
+          allowNull: false
+          message: Странна не является действительным
+
+      - Country:
+          message: Данной страны не существует
+
+      - Type:
+          type: string
+          message: Данное значение {{ value }} не является необходимым типом данных {{ type }}
+
+    city:
+      - NotBlank:
+          allowNull: false
+          message: Город не является действительным
+
+      - Type:
+          type: string
+          message: Данное значение {{ value }} не является необходимым типом данных {{ type }}
+
+      - Length:
+          min: 2
+          minMessage: Данный город не является валидным
+
+
+App\Entity\NamePerson:
+  properties:
+    firstName:
+      - NotBlank:
+          allowNull: false
+          message: Имя не является действительной
+
+      - Type:
+          type: string
+          message: Данное значение {{ value }} не является необходимым типом данных {{ type }}
+
+    lastName:
+      - NotBlank:
+          allowNull: false
+          message: Фамилия не является действительной
+
+      - Type:
+          type: string
+          message: Данное значение {{ value }} не является необходимым типом данных {{ type }}
+
+    middleName:
+      - NotBlank:
+          allowNull: false
+          message: Отчество не является действительным
+
+      - Type:
+          type: string
+          message: Данное значение {{ value }} не является необходимым типом данных {{ type }}
+
+
+App\Entity\Ports:
+  constraints:
+    - Cascade: ~
+  properties:
+    name:
+      - NotBlank:
+          allowNull: false
+          message: Название порта не является действительным
+
+      - Type:
+          type: string
+          message: Данное значение {{ value }} не является необходимым типом данных {{ type }}
+
+
+App\Entity\Companies:
+  constraints:
+    - Cascade: ~
+  properties:
+    name:
+      - NotBlank:
+          allowNull: false
+          message: Название компании не является действительным
+
+      - Type:
+          type: string
+          message: Данное значение {{ value }} не является необходимым типом данных {{ type }}
