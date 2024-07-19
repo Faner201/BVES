@@ -25,16 +25,10 @@ class CommandValidateConsumerData extends Command
         parent::__construct();
     }
 
-
-    protected function configure()
-    {
-        $this->addArgument('name-queue', InputArgument::REQUIRED, 'The main queue for taking data');
-    }
-
     public function execute(InputInterface $input, OutputInterface $output)
     {
         try {
-            $this->consumer->receiving($input->getArgument('name-queue'));
+            $this->consumer->receiving('task');
         } catch (\Exception $ex) {
             $output->writeln('Операция получила ошибку:'. $ex);
             $this->consumer->closure();
