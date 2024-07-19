@@ -5,12 +5,31 @@ BVES (in the expanded version broker, validation, exchange, save)  - the project
 ```
   cp .env.example .env
 ```
+It is necessary to update the data in the received env file.
+Then run the following commands:
+```
+make create
+make start
+make install-composer
+```
+```
+make create-db
+make migrate
+```
+```
+make run-server
+```
+
 ### Using
-In this system, there is this command that provides the opportunity to simulate an external call to the API being developed
-```
-  php bin/console app:call-api
-```
 Also, you need to start the consumer to listen to the queue using this command
 ```
-php bin/console rabbitMQ:consumer-validate-data "Your name queue, which contains the new data" 
+make run-consumer-validate 
+```
+You also need to run the consumer to work with the database
+```
+make run-consumer-db
+```
+After the above steps, you can simulate the interaction of an external service with our api
+```
+  make run external-api
 ```
