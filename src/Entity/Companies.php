@@ -57,10 +57,10 @@ class Companies
     }
 
     /**
-     * @var Location
+     * @param Location $location
      * @ORM\ManyToOne(targetEntity="Location", cascade={"persist"})
      */
-    private $location;
+    private Location $location;
 
     /**
      * @return Location
@@ -79,10 +79,10 @@ class Companies
     }
 
     /**
-     * @var Information
+     * @param Information $information
      * @ORM\ManyToOne(targetEntity="Information", cascade={"persist"})
      */
-    private $information;
+    private Information $information;
 
     /**
      * @return Information
@@ -101,10 +101,9 @@ class Companies
     }
 
     /**
-     * @var NamePerson
      * @ORM\OneToOne(targetEntity="NamePerson", cascade={"persist"})
      */
-    private $founder;
+    private NamePerson $founder;
 
     /**
      * @return NamePerson

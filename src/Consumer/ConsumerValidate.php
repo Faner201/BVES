@@ -15,6 +15,7 @@ class ConsumerValidate extends ConsumerAbstract
 {
 
     private ValidatorInterface $validator;
+    private SerializerInterface $serializer;
 
     /**
      * @param ValidatorInterface $validator
@@ -29,7 +30,7 @@ class ConsumerValidate extends ConsumerAbstract
 
     public function callback($message)
     {
-        $jsonArray = json_decode(json_decode($message->body), true);
+        $jsonData = json_decode(json_decode($message->body), true);
 
         $validData = array();
 
@@ -37,45 +38,60 @@ class ConsumerValidate extends ConsumerAbstract
 
         $class = stdClass::class;
 
-        foreach ($jsonArray as $jsonData) {
+        foreach ($jsonData as $jsonArrayData) {
+            $vesselsValid = array();
+            $portsValid = array();
+            $companiesValid = array();
+            foreach ($jsonArrayData as $name => $dataArray) {
+                foreach ($dataArray as $data) {
+                    $qualityData = true;
+                    $json = $this->serialize($data);
 
-            $qualityData = true;
+                    switch ($name) {
+                        case 'Vessels':
+                            $class = Vessels::class;
+                            break;
+                        case 'Ports':
+                            $class = Ports::class;
+                            break;
+                        case 'Companies':
+                            $class = Companies::class;
+                            break;
+                    }
 
-            $jsonData['Companie']['information']['number'] = preg_replace
-            (
-                '/[^0-9]/',
-                '',
-                $jsonData['Companie']['information']['number']
+                    $dto = $this->serializer->deserialize($json, $class, 'json');
+                    $errors = $this->validator->validate($dto);
+
+                    if (count($errors) > 0) {
+                        $validErrors[] = (string)$errors;
+                        $qualityData = false;
+                    }
+                    if ($qualityData) {
+                        switch ($name) {
+                            case 'Vessels':
+                                $vesselsValid[] = $data;
+                                break;
+                            case 'Ports':
+                                $portsValid[] = $data;
+                                break;
+                            case 'Companies':
+                                $data['information']['number'] = preg_replace
+                                (
+                                    '/[^0-9]/',
+                                    '',
+                                    $data['information']['number']
+                                );
+                                $companiesValid[] = $data;
+                                break;
+                        }
+                    }
+                }
+            }
+            $validData[] = array(
+                'Vessels' => $vesselsValid,
+                'Ports' => $portsValid,
+                'Companies' => $companiesValid
             );
-
-            foreach ($jsonData as $name =>  $data) {
-                $json = $this->serialize($data);
-
-                switch ($name) {
-                    case 'Vessel':
-                        $class = Vessels::class;
-                        break;
-                    case 'Port':
-                        $class = Ports::class;
-                        break;
-                    case 'Companie':
-                        $class = Companies::class;
-                        break;
-                }
-
-                $dto = $this->serializer->deserialize($json, $class, 'json');
-                $errors = $this->validator->validate($dto);
-
-                if (count($errors) > 0) {
-                    $validErrors[] = (string) $errors;
-                    $qualityData = false;
-                }
-
-            }
-
-            if ($qualityData) {
-                $validData[] = $jsonData;
-            }
         }
 
         $msg = new AMQPMessage($this->serialize($validData));

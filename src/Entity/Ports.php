@@ -57,10 +57,10 @@ class Ports
     }
 
     /**
-     * @var Location
+     * @param Location $location
      * @ORM\OneToOne(targetEntity="Location", cascade={"persist"})
      */
-    private $location;
+    private Location $location;
 
     /**
      * @return Location

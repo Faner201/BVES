@@ -80,9 +80,7 @@ App\Entity\Information:
 
       - Length:
           min: 11
-          max: 11
           minMessage: Данный номер не является валидным
-          maxMessage: Данный номер не является валидным
 
     email:
       - NotBlank:
@@ -105,9 +103,6 @@ App\Entity\Location:
           allowNull: false
           message: Странна не является действительным
 
-      - Country:
-          message: Данной страны не существует
-
       - Type:
           type: string
           message: Данное значение {{ value }} не является необходимым типом данных {{ type }}
@@ -120,10 +115,6 @@ App\Entity\Location:
       - Type:
           type: string
           message: Данное значение {{ value }} не является необходимым типом данных {{ type }}
-
-      - Length:
-          min: 2
-          minMessage: Данный город не является валидным
 
 
 App\Entity\NamePerson:

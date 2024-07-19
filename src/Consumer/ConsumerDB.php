@@ -29,35 +29,36 @@ class ConsumerDB extends ConsumerAbstract
 
     public function callback($message)
     {
-        $jsonArray = json_decode($message->body, true);
+        $jsonData = json_decode($message->body, true);
         $class = stdClass::class;
 
-        foreach ($jsonArray as $jsonData) {
-            foreach ($jsonData as $name => $data) {
-                $json = $this->serializer->serialize
-                (
-                    $data,
-                    JsonEncoder::FORMAT,
-                    ['json_encode_options' => JSON_UNESCAPED_UNICODE]
-                );
+        foreach ($jsonData as $jsonArrayData) {
+            foreach ($jsonArrayData as $name => $dataArray) {
+                foreach ($dataArray as $data) {
+                    $json = $this->serializer->serialize
+                    (
+                        $data,
+                        JsonEncoder::FORMAT,
+                        ['json_encode_options' => JSON_UNESCAPED_UNICODE]
+                    );
 
-                switch ($name) {
-                    case 'Vessel':
-                        $class = Vessels::class;
-                        break;
-                    case 'Port':
-                        $class = Ports::class;
-                        break;
-                    case 'Companie':
-                        $class = Companies::class;
-                        break;
+                    switch ($name) {
+                        case 'Vessels':
+                            $class = Vessels::class;
+                            break;
+                        case 'Ports':
+                            $class = Ports::class;
+                            break;
+                        case 'Companies':
+                            $class = Companies::class;
+                            break;
+                    }
+
+                    $dto = $this->serializer->deserialize($json, $class, 'json');
+                    $this->manager->persist($dto);
                 }
-
-                $dto = $this->serializer->deserialize($json, $class, 'json');
-                $this->manager->persist($dto);
             }
+            $this->manager->flush();
         }
-
-        $this->manager->flush();
     }
 }
