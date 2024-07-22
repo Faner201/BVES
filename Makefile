@@ -1,7 +1,7 @@
 default: help
--include .env
+-include .env.local
 
-COMPOSE = docker compose --env-file .env
+COMPOSE = docker compose --env-file .env.local
 PHP		:= $(COMPOSE) exec -T php
 
 .PHONY: help
@@ -37,6 +37,9 @@ drop-db: # Drop database. Dangerous command
 migrate: # Migrate to latest migration
 	$(PHP) bin/console doctrine:migrations:migrate latest
 
+.PHONY: create-migrate
+create-migrate: # Creating a migration
+	$(PHP) bin/console make:migration
 .PHONY: router
 router: # Show urls and routers
 	$(PHP) bin/console debug:router

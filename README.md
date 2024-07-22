@@ -3,7 +3,7 @@ BVES (in the expanded version broker, validation, exchange, save)  - the project
 
 ### Installation
 ```
-  cp .env.example .env
+  cp .env.example .env.local
 ```
 It is necessary to update the data in the received env file.
 Then run the following commands:
@@ -13,7 +13,7 @@ make start
 make install-composer
 ```
 ```
-make create-db
+make create-migrate
 make migrate
 ```
 ```
