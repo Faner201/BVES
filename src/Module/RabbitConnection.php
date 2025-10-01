@@ -1,10 +1,10 @@
 <?php
 
-namespace App;
+namespace App\Module;
 
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 
-class RabbitConnection
+class RabbitConnection implements ConnectionInterface
 {
     private AMQPStreamConnection $connection;
 
@@ -22,7 +22,7 @@ class RabbitConnection
         );
     }
 
-    final protected function getConnection(): AMQPStreamConnection
+    public final function getConnection(): AMQPStreamConnection
     {
         try {
             $this->init();
@@ -31,6 +31,4 @@ class RabbitConnection
         }
         return $this->connection;
     }
-
-
 }

@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Consumer;
+namespace App\Module\Consumer;
 
 use App\Entity\Companies;
 use App\Entity\Ports;
 use App\Entity\Vessels;
+use App\Module\ConnectionInterface;
 use PhpAmqpLib\Message\AMQPMessage;
 use stdClass;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
@@ -18,14 +19,18 @@ class ConsumerValidate extends ConsumerAbstract
     private SerializerInterface $serializer;
 
     /**
+     * @param ConnectionInterface $connection
      * @param ValidatorInterface $validator
      * @param SerializerInterface $serializer
      */
-    public function __construct(ValidatorInterface $validator, SerializerInterface $serializer)
-    {
+    public function __construct(
+        ConnectionInterface $connection,
+        ValidatorInterface $validator, 
+        SerializerInterface $serializer
+    ) {
+        parent::__construct($connection);
         $this->validator = $validator;
         $this->serializer = $serializer;
-        parent::__construct();
     }
 
     public function callback($message)

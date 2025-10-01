@@ -1,22 +1,22 @@
 <?php
 
-namespace App\Consumer;
+namespace App\Module\Consumer;
 
-use App\RabbitConnection;
+use App\Module\ConnectionInterface;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 
 /**
  * @method externalCallback($message)
  */
-abstract class ConsumerAbstract extends RabbitConnection
+abstract class ConsumerAbstract
 {
     private AMQPStreamConnection $connection;
     private AMQPChannel $channel;
 
-    public function __construct()
+    public function __construct(ConnectionInterface $connection)
     {
-        $this->connection = $this->getConnection();
+        $this->connection = $connection->getConnection();
         $this->channel = $this->connection->channel();
     }
 

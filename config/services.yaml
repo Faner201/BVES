@@ -19,12 +19,20 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
-    App\Consumer\ConsumerValidate:
+    
+    App\Module\Consumer\:
+        resource: '../src/Module/Consumer/*'
+
+    App\Module\Consumer\ConsumerValidate:
         arguments:
             $validator: '@validator'
             $serializer: '@serializer'
 
-    App\Consumer\ConsumerDB:
+    App\Module\ConnectionInterface:
+        alias: App\Module\RabbitConnection
+        public: true
+
+    App\Module\Consumer\ConsumerDB:
         arguments:
             $serializer: '@serializer'
             $manager: '@doctrine.orm.entity_manager'
