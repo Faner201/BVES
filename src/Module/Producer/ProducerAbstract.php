@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Producer;
+namespace App\Module\Producer;
 
-use App\RabbitConnection;
+use App\Module\ConnectionInterface;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 
-class Producer extends RabbitConnection
+abstract class ProducerAbstract
 {
     private AMQPStreamConnection $connection;
     private AMQPChannel $channel;
-    public function __construct()
+    public function __construct(ConnectionInterface $connection)
     {
-        $this->connection = $this->getConnection();
+        $this->connection = $connection->getConnection();
         $this->channel = $this->connection->channel();
     }
 

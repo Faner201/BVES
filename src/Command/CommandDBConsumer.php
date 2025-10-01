@@ -2,7 +2,7 @@
 
 namespace App\Command;
 
-use App\Consumer\ConsumerDB;
+use App\Module\Consumer\ConsumerDB;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

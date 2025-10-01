@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Consumer;
+namespace App\Module\Consumer;
 
 use App\Entity\Companies;
 use App\Entity\Ports;
 use App\Entity\Vessels;
+use App\Module\ConnectionInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use stdClass;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
@@ -17,14 +18,18 @@ class ConsumerDB extends ConsumerAbstract
     private EntityManagerInterface $manager;
 
     /**
+     * @param ConnectionInterface $connection
      * @param SerializerInterface $serializer
      * @param EntityManagerInterface $manager
      */
-    public function __construct(SerializerInterface $serializer, EntityManagerInterface $manager)
-    {
+    public function __construct(
+        ConnectionInterface $connection,
+        SerializerInterface $serializer, 
+        EntityManagerInterface $manager
+    ) {
+        parent::__construct($connection);
         $this->serializer = $serializer;
         $this->manager = $manager;
-        parent::__construct();
     }
 
     public function callback($message)
