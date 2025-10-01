@@ -13,6 +13,19 @@
             "src/Entity/.gitignore"
         ]
     },
+    "artprima/prometheus-metrics-bundle": {
+        "version": "1.15",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "1.14",
+            "ref": "9522bce04594caddf6c61ec78c88fea5f5ffa121"
+        },
+        "files": [
+            "config/packages/prometheus_metrics.yaml",
+            "config/routes/metrics.yaml"
+        ]
+    },
     "doctrine/annotations": {
         "version": "2.0",
         "recipe": {
@@ -24,6 +37,15 @@
         "files": [
             "config/routes/annotations.yaml"
         ]
+    },
+    "doctrine/deprecations": {
+        "version": "1.1",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "1.0",
+            "ref": "87424683adc81d7dc305eefec1fced883084aab9"
+        }
     },
     "doctrine/doctrine-bundle": {
         "version": "2.12",

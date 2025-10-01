@@ -6,6 +6,7 @@ use App\Module\Producer\Producer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 class DataAcceptanceController extends AbstractController
 {
@@ -14,9 +15,7 @@ class DataAcceptanceController extends AbstractController
      */
     public function processing(Request $request, ConnectionInterface $connection): Response
     {
-
-//        $data = json_decode(json_decode($request->getContent()), true);
-        $data = $request->getContent();
+        $data = json_decode(json_decode($request->getContent()), true);
         $queue = 'task';
 
         $producer = new Producer($connection);
