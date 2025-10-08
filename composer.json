@@ -9,6 +9,7 @@
         "ext-iconv": "*",
         "ext-json": "*",
         "api-platform/core": "^2.7",
+        "artprima/prometheus-metrics-bundle": "^1.15",
         "doctrine/annotations": "^2.0",
         "doctrine/doctrine-bundle": "^2.12",
         "doctrine/doctrine-migrations-bundle": "^3.3",
